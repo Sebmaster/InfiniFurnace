@@ -19,7 +19,7 @@ public class InfiniFurnace extends JavaPlugin {
 		
 		@Override
 		public void onFurnaceBurn(FurnaceBurnEvent evt) {
-			if (evt.getFuel().getType() == Material.LAVA_BUCKET) {
+			if (evt.getFuel().getType() == Material.LAVA_BUCKET && !evt.isCancelled()) {
 				evt.getFuel().setAmount(2);
 			}
 		}
