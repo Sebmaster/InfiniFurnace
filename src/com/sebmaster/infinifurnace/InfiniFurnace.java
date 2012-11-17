@@ -1,10 +1,9 @@
 package com.sebmaster.infinifurnace;
 
 import org.bukkit.Material;
-import org.bukkit.event.Event.Priority;
-import org.bukkit.event.Event.Type;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
-import org.bukkit.event.inventory.InventoryListener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -13,24 +12,18 @@ import org.bukkit.plugin.java.JavaPlugin;
  * 
  * @author Sebastian Mayr
  */
-public class InfiniFurnace extends JavaPlugin {
-	
-	class InfiniFurnaceListener extends InventoryListener {
-		
-		@Override
-		public void onFurnaceBurn(FurnaceBurnEvent evt) {
-			if (evt.getFuel().getType() == Material.LAVA_BUCKET && !evt.isCancelled()) {
-				evt.getFuel().setAmount(2);
-			}
-		}
-	}
-
-	@Override
-    public void onDisable() {}
+public class InfiniFurnace extends JavaPlugin implements Listener {
 
 	@Override
     public void onEnable() {
 		PluginManager pm = this.getServer().getPluginManager();
-		pm.registerEvent(Type.FURNACE_BURN, new InfiniFurnaceListener(), Priority.Normal, this);
+		pm.registerEvents(this, this);
     }
+	
+	@EventHandler
+	public void onFurnaceBurn(FurnaceBurnEvent evt) {
+		if (evt.getFuel().getType() == Material.LAVA_BUCKET) {
+			evt.getFuel().setAmount(2);
+		}
+	}
 }
